@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const { ReasonPhrases, StatusCodes } = require("http-status-codes");
 
 // Zugriff auf Umgebungsvariablen
 const { PORT } = process.env;
@@ -32,17 +33,21 @@ let profiles = [
     birthDate: new Date("1980-10-10"),
   },
 ];
-// Get  Request
+//  ***GET REQUESTS***
 // Get all Profiles
 app.get("/profiles", (req, res) => {
-  res.json({ profiles });
+  res.status(StatusCodes.OK).json({ profiles });
 });
 
 // Return profile from a specific user
 app.get("/profile", (req, res) => {
   const userId = parseInt(req.query.userId);
+  if (!userId) {
+    res.status(StatusCodes.BAD_REQUEST).send(ReasonPhrases.BAD_REQUEST);
+    return;
+  }
   const userProfile = profiles.find((item) => item.id === userId);
-  res.json({ profile: userProfile });
+  res.status(StatusCodes.OK).json({ profile: userProfile });
 });
 
 // POST Request
