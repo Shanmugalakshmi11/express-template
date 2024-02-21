@@ -24,7 +24,7 @@ todosRouter.get("/id", (req, res) => {
     return;
   }
   const usertodos = todos.find((item) => item.id === todosId);
-  res.status(StatusCodes.OK).json({ profile: usertodos });
+  res.status(StatusCodes.OK).json({ todos: usertodos });
 });
 
 //  ***PUT REQUESTS***
@@ -76,13 +76,13 @@ todosRouter.post("/create", (req, res) => {
 
 // GET - /todos/byuserid: All todos from a user
 todosRouter.get("/byuserid", (req, res) => {
-  const userId = parseInt(req.query.userId);
-
-  if (isNaN(userId)) {
-    return res.status(400).json({ error: "Invalid userId" });
+  const todosId = parseInt(req.query.todosId);
+  if (!todosId) {
+    res.status(StatusCodes.BAD_REQUEST).send(ReasonPhrases.BAD_REQUEST);
+    return;
   }
-
-  const userTodos = todos.filter((todo) => todo.userId === userId);
-  res.json({ userTodos });
+  const usertodos = todos.find((item) => item.id === todosId);
+  res.status(StatusCodes.OK).json({ todos: usertodos });
 });
+
 module.exports = { todosRouter };
