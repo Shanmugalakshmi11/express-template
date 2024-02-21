@@ -3,10 +3,10 @@ const { StatusCodes, ReasonPhrases } = require("http-status-codes");
 
 // Simulated database for todos
 let todos = [
-  { id: 1, task: "Complete project", completed: false },
-  { id: 2, task: "Review code", completed: true },
-  { id: 3, task: "QA", completed: true },
-  { id: 4, task: "Developer Team", completed: false },
+  { id: 1, task: "Complete project", completed: true, Date: "03.03.2024" },
+  { id: 2, task: "Review code", completed: false, Date: "03.10.2024" },
+  { id: 3, task: "QA", completed: true, Date: "23.02.2024" },
+  { id: 4, task: "Developer Team", completed: false, Date: "25.01.2024" },
 ];
 
 const todosRouter = Router();
