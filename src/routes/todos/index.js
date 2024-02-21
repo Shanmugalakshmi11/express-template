@@ -54,14 +54,14 @@ todosRouter.delete("/delete", (req, res) => {
 
 // PUT - /todos/mark: Mark todo completed
 todosRouter.put("/mark", (req, res) => {
-  const { taskId } = req.body;
-  const todoToMark = todos.find((todo) => todo.id === taskId);
-
+  const { taskId, task, completed } = req.body;
+  const todoToMark = todos.find((item) => item.id === taskId);
+  todoToMark.task = task;
+  todoToMark.completed = completed;
   if (!todoToMark) {
     return res.status(404).json({ error: "Todo not found" });
   }
 
-  todoToMark.completed = true;
   res.json({ markedTodo: todoToMark });
 });
 
