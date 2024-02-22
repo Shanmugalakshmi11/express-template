@@ -3,10 +3,10 @@ const { StatusCodes, ReasonPhrases } = require("http-status-codes");
 
 // Simulated database for todos
 let todos = [
-  { id: 1, task: "Complete project", completed: true, Date: "03.03.2024" },
-  { id: 2, task: "Review code", completed: false, Date: "03.10.2024" },
-  { id: 3, task: "QA", completed: true, Date: "23.02.2024" },
-  { id: 4, task: "Developer Team", completed: false, Date: "25.01.2024" },
+  { id: 1, task: "Complete project", completed: true, DueDate: "03.03.2024" },
+  { id: 2, task: "Review code", completed: false, DueDate: "03.10.2024" },
+  { id: 3, task: "QA", completed: true, DueDate: "23.02.2024" },
+  { id: 4, task: "Developer Team", completed: false, DueDate: "25.01.2024" },
 ];
 
 console.log(todos);
@@ -30,17 +30,18 @@ todosRouter.get("/id", (req, res) => {
 
 //  ***PUT REQUESTS***
 todosRouter.put("/update", (req, res) => {
-  const { todostask, todosId } = req.body;
+  const { task, todosId, DueDate, completed } = req.body;
 
   const currenttask = todos.find((item) => item.id === todosId);
-  currenttask.todostask = todostask;
+  currenttask.task = task;
+  currenttask.DueDate = DueDate;
+  currenttask.completed = completed;
+  const updatedTodo = todos.filter((item) => item.id !== todosId);
+  updatedTodo.push(currenttask);
 
-  const deletedProfiles = todos.filter((item) => item.id !== todosId);
-  deletedProfiles.push(currenttask);
+  todos = updatedTodo;
 
-  profiles = deletedProfiles;
-
-  res.json({ updatedProfile: currenttask });
+  res.json({ updatedTodo: currenttask });
 });
 
 //  ***DELETE REQUESTS***
@@ -58,16 +59,24 @@ todosRouter.delete("/delete", (req, res) => {
 });
 
 // PUT - /todos/mark: Mark todo completed
+// PUT REQUESTS
 todosRouter.put("/mark", (req, res) => {
-  const { taskId, task, completed } = req.body;
-  const todoToMark = todos.find((item) => item.id === taskId);
-  todoToMark.task = task;
-  todoToMark.completed = completed;
-  if (!todoToMark) {
-    return res.status(404).json({ error: "Todo not found" });
-  }
+  const { id, completed } = req.body;
 
-  res.json({ markedTodo: todoToMark });
+  const todo = todos.find((item) => item.id == id);
+
+  // setzt das zuvor definierte todo auf den neuen isDone WErt
+  todo.completed = completed;
+
+  // Todo rauslöschen
+  const newTodos = todos.filter((item) => item.id != id);
+
+  // Geupdatete Todo wieder hinzufügen
+  newTodos.push(todo);
+
+  todos = newTodos;
+
+  res.status(StatusCodes.OK).json({ updatedTodo: todo });
 });
 
 // POST - /todos/create: Create todo
