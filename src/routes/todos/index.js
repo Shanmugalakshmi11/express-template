@@ -9,6 +9,7 @@ let todos = [
   { id: 4, task: "Developer Team", completed: false, Date: "25.01.2024" },
 ];
 
+console.log(todos);
 const todosRouter = Router();
 
 // GET - /todos/all: Return all todos
@@ -45,9 +46,13 @@ todosRouter.put("/update", (req, res) => {
 //  ***DELETE REQUESTS***
 todosRouter.delete("/delete", (req, res) => {
   const { todosId } = req.body;
-
-  const deletedProfiles = todos.filter((item) => item.id !== todosId);
-  todos = deletedProfiles;
+  console.log(req.body);
+  const remainingProfiles = todos.filter((item) => item.id !== todosId);
+  console.log(todosId);
+  console.log(remainingProfiles);
+  todos = remainingProfiles;
+  console.log(todos);
+  console.log("This is deletion");
 
   res.json({ deletedUserId: todosId });
 });
