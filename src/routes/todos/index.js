@@ -81,11 +81,16 @@ todosRouter.put("/mark", (req, res) => {
 
 // POST - /todos/create: Create todo
 todosRouter.post("/create", (req, res) => {
-  const { task, userId } = req.body;
-  const newTodo = { id: todos.length + 1, task, completed: false, userId };
+  const { newTask, newCompleted, newDueDate } = req.body;
+  const newTodo = {
+    id: todos.length + 1,
+    task: newTask,
+    completed: newCompleted,
+    DueDate: newDueDate,
+  };
 
   todos.push(newTodo);
-  res.json({ createdTodo: newTodo });
+  res.status(StatusCodes.OK).json({ todo: newTodo });
 });
 
 // GET - /todos/byuserid: All todos from a user
