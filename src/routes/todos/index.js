@@ -1,12 +1,14 @@
 const { Router } = require("express");
 const { StatusCodes, ReasonPhrases } = require("http-status-codes");
+const todoSequelize = require("../../database/setup/database");
+const TodoModel = require("../../database/models/TodoModel");
 
 // Simulated database for todos
 let todos = [
-  { id: 1, task: "Complete project", completed: true, DueDate: "03.03.2024" },
-  { id: 2, task: "Review code", completed: false, DueDate: "03.10.2024" },
-  { id: 3, task: "QA", completed: true, DueDate: "23.02.2024" },
-  { id: 4, task: "Developer Team", completed: false, DueDate: "25.01.2024" },
+  { id: 1, task: "Complete project", isDone: true, DueDate: "03.03.2024" },
+  { id: 2, task: "Review code", isDone: false, DueDate: "03.10.2024" },
+  { id: 3, task: "QA", isDone: true, DueDate: "23.02.2024" },
+  { id: 4, task: "Developer Team", isDone: false, DueDate: "25.01.2024" },
 ];
 
 console.log(todos);
@@ -30,12 +32,12 @@ todosRouter.get("/id", (req, res) => {
 
 //  ***PUT REQUESTS***
 todosRouter.put("/update", (req, res) => {
-  const { task, todosId, DueDate, completed } = req.body;
+  const { task, todosId, DueDate, isDone } = req.body;
 
   const currenttask = todos.find((item) => item.id === todosId);
   currenttask.task = task;
   currenttask.DueDate = DueDate;
-  currenttask.completed = completed;
+  currenttask.isDone = isDone;
   const updatedTodo = todos.filter((item) => item.id !== todosId);
   updatedTodo.push(currenttask);
 
@@ -61,12 +63,12 @@ todosRouter.delete("/delete", (req, res) => {
 // PUT - /todos/mark: Mark todo completed
 // PUT REQUESTS
 todosRouter.put("/mark", (req, res) => {
-  const { id, completed } = req.body;
+  const { id, isDone } = req.body;
 
   const todo = todos.find((item) => item.id == id);
 
   // setzt das zuvor definierte todo auf den neuen isDone WErt
-  todo.completed = completed;
+  todo.isDone = isDone;
 
   // Todo rauslöschen
   const newTodos = todos.filter((item) => item.id != id);
@@ -80,17 +82,17 @@ todosRouter.put("/mark", (req, res) => {
 });
 
 // POST - /todos/create: Create todo
-todosRouter.post("/create", (req, res) => {
-  const { newTask, newCompleted, newDueDate } = req.body;
+todosRouter.post("/create", async (req, res) => {
+  const { newTask, newIsDone, newDueDate } = req.body;
   const newTodo = {
-    id: todos.length + 1,
     task: newTask,
-    completed: newCompleted,
+    isDone: newIsDone,
     DueDate: newDueDate,
   };
 
   todos.push(newTodo);
-  res.status(StatusCodes.OK).json({ todo: newTodo });
+  const todo = await TodoModel.create(newTodo);
+  res.status(StatusCodes.OK).json({ todo });
 });
 
 // GET - /todos/byuserid: All todos from a user
