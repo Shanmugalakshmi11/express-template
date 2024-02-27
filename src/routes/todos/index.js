@@ -2,6 +2,7 @@ const { Router } = require("express");
 const { StatusCodes, ReasonPhrases } = require("http-status-codes");
 const todoSequelize = require("../../database/setup/database");
 const TodoModel = require("../../database/models/TodoModel");
+const { where } = require("sequelize");
 
 // Simulated database for todos
 let todos = [
@@ -32,33 +33,26 @@ todosRouter.get("/id", (req, res) => {
 });
 
 //  ***PUT REQUESTS***
-todosRouter.put("/update", (req, res) => {
-  const { task, todosId, DueDate, isDone } = req.body;
-
-  const currenttask = todos.find((item) => item.id === todosId);
-  currenttask.task = task;
-  currenttask.DueDate = DueDate;
-  currenttask.isDone = isDone;
-  const updatedTodo = todos.filter((item) => item.id !== todosId);
-  updatedTodo.push(currenttask);
-
-  todos = updatedTodo;
-
-  res.json({ updatedTodo: currenttask });
+todosRouter.put("/update", async (req, res) => {
+  const { newTask, todoId, newDueDate, newIsDone } = req.body;
+  const todos = await TodoModel.update(
+    {
+      task: newTask,
+      isDone: newIsDone,
+      DueDate: newDueDate,
+    },
+    { where: { id: todoId } }
+  );
+  const todo = await TodoModel.findByPk(todoId);
+  res.status(StatusCodes.OK).json({ updatedTodos: todo });
 });
 
 //  ***DELETE REQUESTS***
-todosRouter.delete("/delete", (req, res) => {
-  const { todosId } = req.body;
-  console.log(req.body);
-  const remainingProfiles = todos.filter((item) => item.id !== todosId);
-  console.log(todosId);
-  console.log(remainingProfiles);
-  todos = remainingProfiles;
-  console.log(todos);
-  console.log("This is deletion");
+todosRouter.delete("/delete", async (req, res) => {
+  const { todoId } = req.body;
+  await TodoModel.destroy({ where: { id: todoId } });
 
-  res.json({ deletedUserId: todosId });
+  res.status(StatusCodes.OK).json({ DeletedTodos: todoId });
 });
 
 // PUT - /todos/mark: Mark todo completed
@@ -97,14 +91,15 @@ todosRouter.post("/create", async (req, res) => {
 });
 
 // GET - /todos/byuserid: All todos from a user
-todosRouter.get("/byuserid", (req, res) => {
-  const todosId = parseInt(req.query.todosId);
-  if (!todosId) {
+todosRouter.get("/byid", async (req, res) => {
+  const todoid = req.query.todoid;
+
+  if (!todoid) {
     res.status(StatusCodes.BAD_REQUEST).send(ReasonPhrases.BAD_REQUEST);
     return;
   }
-  const usertodos = todos.find((item) => item.id === todosId);
-  res.status(StatusCodes.OK).json({ todos: usertodos });
+  const todo = await TodoModel.findOne({ where: { id: todoid } });
+  res.status(StatusCodes.OK).json({ todo: todo });
 });
 
 module.exports = { todosRouter };
