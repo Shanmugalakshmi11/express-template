@@ -15,8 +15,9 @@ console.log(todos);
 const todosRouter = Router();
 
 // GET - /todos/all: Return all todos
-todosRouter.get("/all", (req, res) => {
-  res.json({ todos });
+todosRouter.get("/all", async (req, res) => {
+  const todos = await TodoModel.findAll();
+  res.status(StatusCodes.OK).send(todos);
 });
 //  ***GET REQUESTS***
 // Return todos from a specific user
