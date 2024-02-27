@@ -23,26 +23,7 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "http://localhost:5050/v1/todos/all",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "5050",
-					"path": [
-						"v1",
-						"todos",
-						"all"
-					],
-					"query": [
-						{
-							"key": "todosId",
-							"value": "1",
-							"disabled": true
-						}
-					]
-				}
+				"url": "http://localhost:5050/v1/todos/all"
 			},
 			"response": []
 		},
@@ -130,7 +111,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \r\n    \"newTask\": \"New Project\",\r\n    \"newIsDone\": true,\r\n    \"newDueDate\": \"12-10-2027\"    \r\n}",
+					"raw": "{\r\n    \r\n    \"newTask\": \"New Project\",\r\n    \"newIsDone\": true,\r\n    \"newDueDate\": \"02-05-2027\"    \r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
