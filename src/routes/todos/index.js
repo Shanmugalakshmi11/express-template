@@ -57,23 +57,34 @@ todosRouter.delete("/delete", async (req, res) => {
 
 // PUT - /todos/mark: Mark todo completed
 // PUT REQUESTS
-todosRouter.put("/mark", (req, res) => {
-  const { id, isDone } = req.body;
+todosRouter.put("/mark", async (req, res) => {
+  const { todoId, newIsDone } = req.body;
 
-  const todo = todos.find((item) => item.id == id);
+  await TodoModel.findByPk(todoId)
+    .then((todo) => {
+      // Check if the todo exists
+      if (!todo) {
+        return res
+          .status(StatusCodes.NOT_FOUND)
+          .json({ error: "Todo not found" });
+      }
 
-  // setzt das zuvor definierte todo auf den neuen isDone WErt
-  todo.isDone = isDone;
+      // Update the isDone property
+      todo.isDone = newIsDone;
 
-  // Todo rauslöschen
-  const newTodos = todos.filter((item) => item.id != id);
-
-  // Geupdatete Todo wieder hinzufügen
-  newTodos.push(todo);
-
-  todos = newTodos;
-
-  res.status(StatusCodes.OK).json({ updatedTodo: todo });
+      // Save the changes
+      return todo.save();
+    })
+    .then((updatedTodo) => {
+      // Return the updated todo in the response
+      res.status(StatusCodes.OK).json({ updatedTodo });
+    })
+    .catch((error) => {
+      console.error("Error marking todo as done:", error);
+      res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({ error: "Internal Server Error" });
+    });
 });
 
 // POST - /todos/create: Create todo

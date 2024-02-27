@@ -1,0 +1,181 @@
+{
+	"info": {
+		"_postman_id": "077779d0-99bc-4e9c-997b-e1f32e553f46",
+		"name": "Aws-23-10",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "31478665"
+	},
+	"item": [
+		{
+			"name": "All-Todos",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n    \"newTask\": \"Completed Project\",\r\n    \"newIsDone\": true,\r\n    \"newDueDate\": \"12-10-2027\"    \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5050/v1/todos/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5050",
+					"path": [
+						"v1",
+						"todos",
+						"all"
+					],
+					"query": [
+						{
+							"key": "todosId",
+							"value": "1",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Mark-Todo",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"todoId\": 2,\r\n    \"newIsDone\": true\r\n        \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5050/v1/todos/mark",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5050",
+					"path": [
+						"v1",
+						"todos",
+						"mark"
+					],
+					"query": [
+						{
+							"key": "todosId",
+							"value": "1",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Todo-byid",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n    \"newTask\": \"Completed Project\",\r\n    \"newIsDone\": true,\r\n    \"newDueDate\": \"12-10-2027\"    \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5050/v1/todos/all",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5050",
+					"path": [
+						"v1",
+						"todos",
+						"all"
+					],
+					"query": [
+						{
+							"key": "todosId",
+							"value": "1",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create-Todo",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n    \"newTask\": \"New Project\",\r\n    \"newIsDone\": true,\r\n    \"newDueDate\": \"12-10-2027\"    \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:5050/v1/todos/create"
+			},
+			"response": []
+		},
+		{
+			"name": "Update-Todo",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"todoId\": 1,\r\n    \"newTask\": \"New Project\",\r\n    \"newIsDone\": true,\r\n    \"newDueDate\": \"12-10-2027\"    \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:5050/v1/todos/update"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete-TodoId",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"todoId\": 6\r\n   \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:5050/v1/todos/delete"
+			},
+			"response": []
+		}
+	]
+}
