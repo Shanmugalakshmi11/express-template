@@ -6,10 +6,28 @@ const { where } = require("sequelize");
 
 // Simulated database for todos
 let todos = [
-  { id: 1, task: "Complete project", isDone: true, DueDate: "03.03.2024" },
-  { id: 2, task: "Review code", isDone: false, DueDate: "03.10.2024" },
-  { id: 3, task: "QA", isDone: true, DueDate: "23.02.2024" },
-  { id: 4, task: "Developer Team", isDone: false, DueDate: "25.01.2024" },
+  {
+    id: 1,
+    userId: 1,
+    task: "Complete project",
+    isDone: true,
+    DueDate: "03.03.2024",
+  },
+  {
+    id: 2,
+    userId: 1,
+    task: "Review code",
+    isDone: false,
+    DueDate: "03.10.2024",
+  },
+  { id: 3, userId: 2, task: "QA", isDone: true, DueDate: "23.02.2024" },
+  {
+    id: 4,
+    userId: 2,
+    task: "Developer Team",
+    isDone: false,
+    DueDate: "25.01.2024",
+  },
 ];
 
 console.log(todos);
@@ -113,4 +131,15 @@ todosRouter.get("/byid", async (req, res) => {
   res.status(StatusCodes.OK).json({ todo: todo });
 });
 
+// GET - /todos/byuserid: All todos from a user
+todosRouter.get("/byuserid", async (req, res) => {
+  const userid = req.query.userid;
+
+  if (!userid) {
+    res.status(StatusCodes.BAD_REQUEST).send(ReasonPhrases.BAD_REQUEST);
+    return;
+  }
+  const todo = await TodoModel.findOne({ where: { userid: userid } });
+  res.status(StatusCodes.OK).json({ todo: todo });
+});
 module.exports = { todosRouter };

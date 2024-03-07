@@ -24,6 +24,10 @@ const TodoModel = todoSequelize.define(
       type: DataTypes.DATE,
       allowNull: false,
     },
+    userid: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
   },
   { tableName: "Todos" }
 );
