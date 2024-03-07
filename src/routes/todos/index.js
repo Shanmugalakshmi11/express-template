@@ -52,12 +52,13 @@ todosRouter.get("/id", (req, res) => {
 
 //  ***PUT REQUESTS***
 todosRouter.put("/update", async (req, res) => {
-  const { newTask, todoId, newDueDate, newIsDone } = req.body;
+  const { newTask, todoId, newDueDate, newIsDone, userId } = req.body;
   const todos = await TodoModel.update(
     {
       task: newTask,
       isDone: newIsDone,
       DueDate: newDueDate,
+      userid: userId,
     },
     { where: { id: todoId } }
   );
@@ -107,11 +108,12 @@ todosRouter.put("/mark", async (req, res) => {
 
 // POST - /todos/create: Create todo
 todosRouter.post("/create", async (req, res) => {
-  const { newTask, newIsDone, newDueDate } = req.body;
+  const { newTask, newIsDone, newDueDate, userId } = req.body;
   const newTodo = {
     task: newTask,
     isDone: newIsDone,
     DueDate: newDueDate,
+    userid: userId,
   };
 
   todos.push(newTodo);
